@@ -30,6 +30,21 @@ function absoluteXPath(element) {
   }
   return paths.length ? `/${paths.join("/")}` : "";
 }
+
+//function to check if button is a login button
+function checkButton(element) {
+  const options = ["sign in", "login", "submit", "next", "continue"];
+
+  let ButtonTxt = element.innerText.toLowerCase();
+  let ButtonVal = element.value.toLowerCase();
+  let forButton = options.includes(ButtonTxt);
+  let forInput = options.includes(ButtonVal);
+
+  if (forButton || forInput) {
+    return true;
+  }
+  return false;
+}
 //wait for page to load and then detect login fields
 setTimeout(function () {
   async function detectLoginFields() {
@@ -88,28 +103,33 @@ setTimeout(function () {
         });
       }
     }
+
     for (let input of submitFields) {
       if (input.type !== undefined) {
-        loginFields.push({
-          id: input.id,
-          name: input.name,
-          type: input.type,
-          value: input.value,
-          xpath: absoluteXPath(input),
-          class: input.className,
-        });
+        if (checkButton(input)) {
+          loginFields.push({
+            id: input.id,
+            name: input.name,
+            type: input.type,
+            value: input.value,
+            xpath: absoluteXPath(input),
+            class: input.className,
+          });
+        }
       }
     }
     for (let input of buttonFields) {
       if (input.type !== undefined) {
-        loginFields.push({
-          id: input.id,
-          name: input.name,
-          type: input.type,
-          value: input.innerText,
-          xpath: absoluteXPath(input),
-          class: input.className,
-        });
+        if (checkButton(input)) {
+          loginFields.push({
+            id: input.id,
+            name: input.name,
+            type: input.type,
+            value: input.innerText,
+            xpath: absoluteXPath(input),
+            class: input.className,
+          });
+        }
       }
     }
     //to save json file send it to server and save it there
