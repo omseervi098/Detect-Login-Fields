@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Login Field Detector",
+  "version": "1.0",
+  "description": "Detects login fields and allows you to save them to a database",
+  "permissions": ["activeTab", "storage", "contextMenus", "scripting"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "host_permissions": ["<all_urls>"]
+}
