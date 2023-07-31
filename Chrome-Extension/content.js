@@ -45,6 +45,25 @@ function checkButton(element) {
   }
   return false;
 }
+function convert(input) {
+  return {
+    Type: input.type,
+    Id: input.id,
+    Name: input.name,
+    Event: "",
+    Value: input.value,
+    ClassName: input.className,
+    xpath: absoluteXPath(input),
+    IdentifierType: "selenium",
+    ExeName: "",
+    Image_Score: "0.5",
+    IdentifierValue: "",
+    IsModifier: false,
+    Comp_Type: null,
+    ImgText: "username",
+    ParentImageData: null,
+  };
+}
 //wait for page to load and then detect login fields
 setTimeout(function () {
   async function detectLoginFields() {
@@ -68,13 +87,7 @@ setTimeout(function () {
     }
     for (let input of passwordFields) {
       if (input.type !== undefined) {
-        loginFields.push({
-          id: input.id,
-          name: input.name,
-          type: input.type,
-          xpath: absoluteXPath(input),
-          class: input.className,
-        });
+        loginFields.push(convert(input));
       }
     }
     for (let input of textFields) {
@@ -82,25 +95,13 @@ setTimeout(function () {
         if (input.hidden === true) {
           continue;
         } else {
-          loginFields.push({
-            id: input.id,
-            name: input.name,
-            type: input.type,
-            xpath: absoluteXPath(input),
-            class: input.className,
-          });
+          loginFields.push(convert(input));
         }
       }
     }
     for (let input of emailFields) {
       if (input.type !== undefined) {
-        loginFields.push({
-          id: input.id,
-          name: input.name,
-          type: input.type,
-          xpath: absoluteXPath(input),
-          class: input.className,
-        });
+        loginFields.push(convert(input));
       }
     }
 
@@ -108,12 +109,21 @@ setTimeout(function () {
       if (input.type !== undefined) {
         if (checkButton(input)) {
           loginFields.push({
-            id: input.id,
-            name: input.name,
-            type: input.type,
-            value: input.value,
+            Type: input.type,
+            Id: input.id,
+            Name: input.name,
+            Event: "click",
+            Value: input.value,
+            ClassName: input.className,
             xpath: absoluteXPath(input),
-            class: input.className,
+            IdentifierType: "selenium",
+            ExeName: "",
+            Image_Score: "0.5",
+            IdentifierValue: "",
+            IsModifier: false,
+            Comp_Type: null,
+            ImgText: "username",
+            ParentImageData: null,
           });
         }
       }
@@ -122,12 +132,21 @@ setTimeout(function () {
       if (input.type !== undefined) {
         if (checkButton(input)) {
           loginFields.push({
-            id: input.id,
-            name: input.name,
-            type: input.type,
-            value: input.innerText,
+            Type: input.type,
+            Id: input.id,
+            Name: input.name,
+            Event: "click",
+            Value: input.value,
+            ClassName: input.className,
             xpath: absoluteXPath(input),
-            class: input.className,
+            IdentifierType: "selenium",
+            ExeName: "",
+            Image_Score: "0.5",
+            IdentifierValue: "",
+            IsModifier: false,
+            Comp_Type: null,
+            ImgText: "username",
+            ParentImageData: null,
           });
         }
       }
@@ -138,10 +157,21 @@ setTimeout(function () {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
         url: window.location.href,
-        loginFields: loginFields,
+        Driver: "chrome",
+        LaunchType: "",
+        WaitTime: 1,
+        JSWaitTime: 500,
+        ProcessName: "chrome",
+        ThreadWait: 1000,
+        ElementSearchCount: 0,
+        PageLoadWait: 1000,
+        path: "",
+        RunAsDifferentUser: "",
+        SeleniumData: loginFields,
       }),
     })
       .then((response) => response.json())
