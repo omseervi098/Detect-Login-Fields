@@ -160,7 +160,7 @@ setTimeout(function () {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        url: window.location.href,
+        URL: window.location.href,
         Driver: "chrome",
         LaunchType: "",
         WaitTime: 1,

@@ -12,10 +12,29 @@ app.get("/", (req, res) => {
 });
 app.post("/api/json", (req, res) => {
   //write req.body.loginFields to a json file
-
-  fs.writeFile("data.json", JSON.stringify(req.body), (err) => {
-    console.log(err);
+  let url = req.body.URL;
+  //extract domain name from url
+  url = url.split("/")[2];
+  let currentTimeSpan = new Date().getTime();
+  let folderName = `${url}`;
+  let fileName = `${url}-${currentTimeSpan}.json`;
+  //create folder if not exist
+  fs.mkdir(`Data/${folderName}`, { recursive: true }, (err) => {
+    if (err) {
+      console.log(err);
+    }
   });
+  //write in Data Folder
+  fs.writeFile(
+    `Data/${folderName}/${fileName}`,
+    JSON.stringify(req.body),
+    (err) => {
+      if (err) {
+        console.log(err);
+      }
+    }
+  );
+
   res.status(200).send({
     message: "Data received",
   });
