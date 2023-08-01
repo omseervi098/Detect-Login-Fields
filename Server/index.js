@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
   //save the data to the database
   res.send("Hello World");
 });
-app.post("/api/json", (req, res) => {
+app.post("/api/json", async (req, res) => {
   //write req.body.loginFields to a json file
   let url = req.body.URL;
   //extract domain name from url
@@ -19,6 +19,11 @@ app.post("/api/json", (req, res) => {
   let folderName = `${url}`;
   let fileName = `${url}-${currentTimeSpan}.json`;
   //create folder if not exist
+  fs.mkdir("Data", { recursive: true }, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
   fs.mkdir(`Data/${folderName}`, { recursive: true }, (err) => {
     if (err) {
       console.log(err);
