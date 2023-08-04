@@ -91,7 +91,7 @@ setTimeout(function () {
       return loginFields;
     }
     if (isLoginPage) {
-      //if this page is login then create popup to ask user if he wants to save the login fields
+      //create popup to ask user if he wants to save the login fields
       const iframe = document.createElement("iframe");
       iframe.id = "popup-frame-1";
       document.body.appendChild(iframe);
@@ -101,7 +101,7 @@ setTimeout(function () {
             <h1 style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">Do you want to save the login fields?</h1>
             <div style="display: flex;flex-direction:column; justify-content: space-between; width: 100%;" id="detected-fields-12121">
             </div>
-            <div style="display: flex; justify-content: space-between; width: 100%;">
+            <div style="display: flex; justify-content: space-between; width: 100%;margin-top:4px;">
               <button id="yes-12121" style="width: 100px; height: 40px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Yes</button>
               <button id="no-12121" style="width: 100px; height: 40px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">No</button>
             </div>
@@ -110,9 +110,9 @@ setTimeout(function () {
       );
       iframe.style.position = "fixed";
       iframe.style.top = "2%";
-      iframe.style.right = "5%";
+      iframe.style.right = "2%";
       iframe.style.width = "300px";
-      iframe.style.minHeight = "250px";
+      iframe.style.minHeight = "280px";
       iframe.style.maxHeight = "500px";
       iframe.style.backgroundColor = "white";
       iframe.style.border = "1px solid black";
@@ -142,25 +142,23 @@ setTimeout(function () {
 
       for (let input of submitFields) {
         if (input.type !== undefined) {
-          if (checkButton(input)) {
-            loginFields.push({
-              Type: input.type,
-              Id: input.id,
-              Name: input.name,
-              Event: "click",
-              Value: input.value,
-              ClassName: input.className,
-              xpath: absoluteXPath(input),
-              IdentifierType: "selenium",
-              ExeName: "",
-              Image_Score: "0.5",
-              IdentifierValue: "",
-              IsModifier: false,
-              Comp_Type: null,
-              ImgText: "",
-              ParentImageData: null,
-            });
-          }
+          loginFields.push({
+            Type: input.type,
+            Id: input.id,
+            Name: input.name,
+            Event: "click",
+            Value: input.value,
+            ClassName: input.className,
+            xpath: absoluteXPath(input),
+            IdentifierType: "selenium",
+            ExeName: "",
+            Image_Score: "0.5",
+            IdentifierValue: "",
+            IsModifier: false,
+            Comp_Type: null,
+            ImgText: "",
+            ParentImageData: null,
+          });
         }
       }
       for (let input of buttonFields) {
@@ -186,7 +184,7 @@ setTimeout(function () {
           }
         }
       }
-      //add login fields to popup
+      //add login fields to created iframe
       const detectedFields = iframe.contentWindow.document.querySelector(
         "#detected-fields-12121"
       );
@@ -195,6 +193,7 @@ setTimeout(function () {
       for (let field of loginFields) {
         const fieldDiv = document.createElement("div");
         fieldDiv.style.display = "flex";
+        fieldDiv.style.margin = "5px";
         fieldDiv.style.flexDirection = "column";
         fieldDiv.style.border = "1px solid black";
         fieldDiv.style.borderRadius = "5px";
@@ -203,7 +202,18 @@ setTimeout(function () {
         fieldDiv.innerHTML = `
           <div style="display: flex; align-items: center; width: 100%; height: 100%;" id="field-${id++}">
           <input type="checkbox" style="width: 20px; height: 20px; margin-right: 10px; cursor: pointer;">
-            ${field.Type}, ${field.Name}, ${field.Id}
+          <div style="display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%;">
+          <p style="font-size: 15px; font-weight: 600; margin: 0px;">Type: ${
+            field.Type
+          }</p>
+          <p style="font-size: 15px; font-weight: 600; margin: 0px;">Id: "${
+            field.Id
+          }"</p>
+        
+          <p style="font-size: 15px; font-weight: 600; margin: 0px;">ClassName: "${
+            field.ClassName
+          }"</p>
+          </div>
             </div>
             `;
         //add event listener to checkbox
@@ -217,17 +227,14 @@ setTimeout(function () {
             XPathResult.FIRST_ORDERED_NODE_TYPE,
             null
           ).singleNodeValue;
-
           //if checkbox is checked then add field to processed fields else remove it
           if (checkbox.checked) {
             processedFields.push(field);
-            // highlight the field
             element.style.border = "2px solid red";
           } else {
             processedFields = processedFields.filter(
               (item) => item.Id !== field.Id
             );
-            //remove highlight
             element.style.border = "none";
           }
         });
@@ -236,7 +243,6 @@ setTimeout(function () {
       }
 
       //to save json file send it to server and save it there
-
       iframe.contentWindow.document
         .getElementById("no-12121")
         .addEventListener("click", function () {
