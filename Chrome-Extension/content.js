@@ -33,7 +33,14 @@ function absoluteXPath(element) {
 
 //function to check if button is a login button
 function checkButton(element) {
-  const options = ["sign in", "login", "submit", "next", "continue"];
+  const options = [
+    "sign in",
+    "login",
+    "submit",
+    "next",
+    "continue",
+    "continue with email",
+  ];
 
   let ButtonTxt = element.innerText.toLowerCase();
   let ButtonVal = element.value.toLowerCase();
@@ -163,23 +170,25 @@ setTimeout(function () {
       }
       for (let input of buttonFields) {
         if (input.type !== undefined) {
-          loginFields.push({
-            Type: input.type,
-            Id: input.id,
-            Name: input.name,
-            Event: "click",
-            Value: input.value,
-            ClassName: input.className,
-            xpath: absoluteXPath(input),
-            IdentifierType: "selenium",
-            ExeName: "",
-            Image_Score: "0.5",
-            IdentifierValue: "",
-            IsModifier: false,
-            Comp_Type: null,
-            ImgText: "",
-            ParentImageData: null,
-          });
+          if (checkButton(input)) {
+            loginFields.push({
+              Type: input.type,
+              Id: input.id,
+              Name: input.name,
+              Event: "click",
+              Value: input.value,
+              ClassName: input.className,
+              xpath: absoluteXPath(input),
+              IdentifierType: "selenium",
+              ExeName: "",
+              Image_Score: "0.5",
+              IdentifierValue: "",
+              IsModifier: false,
+              Comp_Type: null,
+              ImgText: "",
+              ParentImageData: null,
+            });
+          }
         }
       }
       //add login fields to created iframe
