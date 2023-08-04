@@ -163,25 +163,23 @@ setTimeout(function () {
       }
       for (let input of buttonFields) {
         if (input.type !== undefined) {
-          if (checkButton(input)) {
-            loginFields.push({
-              Type: input.type,
-              Id: input.id,
-              Name: input.name,
-              Event: "click",
-              Value: input.value,
-              ClassName: input.className,
-              xpath: absoluteXPath(input),
-              IdentifierType: "selenium",
-              ExeName: "",
-              Image_Score: "0.5",
-              IdentifierValue: "",
-              IsModifier: false,
-              Comp_Type: null,
-              ImgText: "",
-              ParentImageData: null,
-            });
-          }
+          loginFields.push({
+            Type: input.type,
+            Id: input.id,
+            Name: input.name,
+            Event: "click",
+            Value: input.value,
+            ClassName: input.className,
+            xpath: absoluteXPath(input),
+            IdentifierType: "selenium",
+            ExeName: "",
+            Image_Score: "0.5",
+            IdentifierValue: "",
+            IsModifier: false,
+            Comp_Type: null,
+            ImgText: "",
+            ParentImageData: null,
+          });
         }
       }
       //add login fields to created iframe
